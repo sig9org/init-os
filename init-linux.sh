@@ -109,31 +109,14 @@ EOF
 }
 
 function ubuntu_extra() {
-  # Install Docker
-  apt-get -y remove docker docker-engine docker.io containerd runc
+  # Install Podman
   apt-get update
-  apt-get -y install ca-certificates curl gnupg
-  install -m 0755 -d /etc/apt/keyrings
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-  chmod a+r /etc/apt/keyrings/docker.gpg
-  echo \
-    "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-    tee /etc/apt/sources.list.d/docker.list > /dev/null
-  apt-get update
-  apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  apt-get -y install podman
 
-  # Install docker compose
-  mkdir -p /usr/local/lib/docker/cli-plugins/
-  curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
-  chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
-
-  # Install docker purge
-  mkdir -p /usr/local/lib/docker/cli-plugins/
-  curl -SL \
-    https://github.com/sig9org/docker-purge/releases/download/v0.0.2/docker-purge_v0.0.2_linux_amd64 \
-    -o /usr/local/lib/docker/cli-plugins/docker-purge
-  chmod +x /usr/local/lib/docker/cli-plugins/docker-purge
+  # Install Podman Compose
+  apt-get -y install pipx
+  pipx install podman-compose
+  pipx ensurepath
 }
 
 declare RELEASE_FILE=/etc/os-release
