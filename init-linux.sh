@@ -7,7 +7,7 @@ function ubuntu_base() {
   # Configure NTP servers
   cat << EOF >> /etc/systemd/timesyncd.conf
   NTP=162.159.200.123 162.159.200.1
-  EOF
+EOF
 
   # Update sshd
   sed -i -e "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
