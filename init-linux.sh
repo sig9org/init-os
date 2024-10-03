@@ -136,6 +136,63 @@ alias vi="nvim"
 alias vim="nvim"
 EOF
 
+  # Change IP address
+  cat << 'EOF' > /usr/local/bin/chaddr
+#!/usr/bin/env python3
+import argparse
+import subprocess
+
+DEFAULT_DNS = ["1.1.1.1", "1.0.0.1"]
+DEFAULT_INTERFACE = "ens160"
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-a", "--address", type=str, required=True)
+parser.add_argument("-g", "--gateway", type=str, required=True)
+parser.add_argument("-d", "--dns", nargs="*", default=DEFAULT_DNS)
+parser.add_argument("-i", "--interface", type=str, default=DEFAULT_INTERFACE)
+args = parser.parse_args()
+
+address = args.address
+gateway = args.gateway
+dns = args.dns
+intf = args.interface
+hostname = address[0 : address.index("/")].replace(".", "-")
+subprocess.call("hostnamectl set-hostname " + hostname, shell=True)
+
+netplan = f"""network:
+  version: 2
+  ethernets:
+    ens2:
+      addresses:
+        - {address}
+      routes:
+        - to: default
+          via: {gateway}
+      dhcp4: false
+      nameservers:
+        addresses:
+"""
+for _ in dns:
+    netplan += f"          - {_}\n"
+with open("/etc/netplan/99_config.yaml", "w") as f:
+    f.write(netplan)
+
+hosts = f"""
+127.0.0.1 localhost {hostname}
+127.0.1.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet {hostname}
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+"""
+with open("/etc/hosts", "w") as f:
+    f.write(hosts)
+EOF
+  chmod 755 /usr/local/bin/chaddr
+
   # Update system
   apt-get -y upgrade
 
@@ -166,14 +223,15 @@ EOF
   chmod 755 /usr/local/bin/venv
 
   # Install ripgrep
-  curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep_14.1.0-1_amd64.deb
-  apt-get -y install ./ripgrep_14.1.0-1_amd64.deb
+  curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep_14.1.1-1_amd64.deb
+  apt-get -y install ./ripgrep_14.1.1-1_amd64.deb
   rm *.deb
 
   # Install Terraform
-  curl -LO https://releases.hashicorp.com/terraform/1.9.4/terraform_1.9.4_linux_amd64.zip
-  unzip -d /usr/local/bin/ terraform_1.9.4_linux_amd64.zip
+  curl -LO https://releases.hashicorp.com/terraform/1.9.7/terraform_1.9.7_linux_amd64.zip
+  unzip -d /usr/local/bin/ terraform_1.9.7_linux_amd64.zip
   rm -f *.zip
+  rm /usr/local/bin/LICENSE.txt
 }
 
 function ubuntu_extra() {
