@@ -162,7 +162,7 @@ subprocess.call("hostnamectl set-hostname " + hostname, shell=True)
 netplan = f"""network:
   version: 2
   ethernets:
-    ens2:
+    {intf}:
       addresses:
         - {address}
       routes:
