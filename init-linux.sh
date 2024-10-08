@@ -201,7 +201,7 @@ EOF
   chmod 755 /usr/local/bin/uncmnt
 
   # Install direnv
-  curl -L https://github.com/direnv/direnv/releases/download/v2.34.0/direnv.linux-amd64 -o /usr/local/bin/direnv && \
+  curl -L https://github.com/direnv/direnv/releases/download/v2.35.0/direnv.linux-amd64 -o /usr/local/bin/direnv && \
   chmod 755 /usr/local/bin/direnv && \
   cat << 'EOF' >> ~/.bashrc
 # direnv
