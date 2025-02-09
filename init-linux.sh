@@ -228,8 +228,8 @@ EOF
   rm *.deb
 
   # Install Terraform
-  curl -LO https://releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_linux_amd64.zip
-  unzip -d /usr/local/bin/ terraform_1.10.3_linux_amd64.zip
+  curl -LO https://releases.hashicorp.com/terraform/1.10.5/terraform_1.10.5_linux_amd64.zip
+  unzip -d /usr/local/bin/ terraform_1.10.5_linux_amd64.zip
   rm -f *.zip
   rm /usr/local/bin/LICENSE.txt
 }
