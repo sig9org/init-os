@@ -10,6 +10,7 @@ apt-get install -y \
   neovim \
   nmap \
   sudo \
+  traceroute \
   tree \
   unzip \
   wget \
