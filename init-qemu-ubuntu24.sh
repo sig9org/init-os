@@ -163,7 +163,7 @@ EOL
 EOF
 
 # Initialization script
-tee /usr/local/bin/init-img.sh <<EOF
+cat << 'EOF' >> /usr/local/bin/init-img.sh
 #!/bin/bash
 
 chmod 755 /usr/local/bin/venv
