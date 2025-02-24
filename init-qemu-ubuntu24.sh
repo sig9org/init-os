@@ -167,7 +167,11 @@ tee /usr/local/bin/init-img.sh <<EOF
 #!/bin/bash
 
 chmod 755 /usr/local/bin/venv
-echo 'eval "$(/usr/bin/mise activate bash)"' >> ~/.bashrc
+
+cat << 'EOL' >> ~/.bashrc
+eval "$(/usr/bin/mise activate bash)"
+EOL
+
 echo 'exit' > ~/.hushlogin
 
 cat << 'EOL' >> ~/.bashrc
