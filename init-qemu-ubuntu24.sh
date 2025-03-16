@@ -107,6 +107,10 @@ cat << 'EOF' > /etc/logrotate.d/syslog
 }
 EOF
 
+# Install uncmnt
+curl -L https://github.com/sig9org/uncmnt/releases/download/v0.0.2/uncmnt_v0.0.2_linux_amd64 -o /usr/local/bin/uncmnt && \
+chmod 755 /usr/local/bin/uncmnt
+
 # Install mise
 apt update -y
 install -dm 755 /etc/apt/keyrings
