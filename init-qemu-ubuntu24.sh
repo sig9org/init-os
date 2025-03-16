@@ -12,10 +12,10 @@ apt-get install -y \
   sudo \
   traceroute \
   tree \
-  tshark \
   unzip \
   wget \
   zip
+DEBIAN_FRONTEND=noninteractive apt -y install tshark
 
 # Disable AppArmor
 systemctl stop apparmor.service
