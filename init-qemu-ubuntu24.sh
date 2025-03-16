@@ -12,6 +12,7 @@ apt-get install -y \
   sudo \
   traceroute \
   tree \
+  tshark \
   unzip \
   wget \
   zip
@@ -176,6 +177,13 @@ EOL
 echo 'exit' > ~/.hushlogin
 
 cat << 'EOL' >> ~/.bashrc
+
+# Modify the prompt.
+if [ `id -u` = 0 ]; then
+  PS1="\[\e[1;31m\]\u@\h \W\\$ \[\e[m\]"
+else
+  PS1="\[\e[1;36m\]\u@\h \W\\$ \[\e[m\]"
+fi
 
 # NeoVim settings
 alias vi="nvim"
