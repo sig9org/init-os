@@ -192,7 +192,19 @@ fi
 # NeoVim settings
 alias vi="nvim"
 alias vim="nvim"
+
+# peco settings
+peco-select-history() {
+  local _cmd=$(HISTTIMEFORMAT= history | tac | sed -e 's/^\s*[0-9]\+\s\+//' | peco --query "$READLINE_LINE")
+  READLINE_LINE="$_cmd"
+  READLINE_POINT=${#_cmd}
+}
+
+bind -x '"\C-r": peco-select-history'
 EOL
+
+mise install peco@latest
+mise use -g peco@latest
 
 mise install python@latest
 mise use -g python@latest
