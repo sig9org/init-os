@@ -9,6 +9,8 @@ apt-get install -y \
   gpg \
   neovim \
   nmap \
+  snmp \
+  snmp-mibs-downloader \
   sudo \
   tree \
   unzip \
