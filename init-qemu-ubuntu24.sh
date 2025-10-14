@@ -162,6 +162,18 @@ tasks:
       - ruff check .
       - mypy .
 
+  mbuild:
+    aliases: [mb]
+    desc: MkDocs Build
+    cmds:
+      - mkdocs build --clean
+
+  mserve:
+    aliases: [ms]
+    desc: MkDocs Serve
+    cmds:
+      - mkdocs serve
+
   test:
     aliases: [t]
     desc: Test
