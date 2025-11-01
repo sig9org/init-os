@@ -19,6 +19,9 @@ apt-get install -y \
   zip
 DEBIAN_FRONTEND=noninteractive apt -y install tshark
 
+# Install Docker
+curl -fsSL https://get.docker.com | /bin/sh
+
 # Disable AppArmor
 systemctl stop apparmor.service
 systemctl disable apparmor.service
