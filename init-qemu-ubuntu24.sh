@@ -2,7 +2,7 @@
 
 # Install basic packages
 apt-get update
-apt-get install -y \
+DEBIAN_FRONTEND=noninteractive apt-get install -y \
   curl \
   fping \
   git \
@@ -14,14 +14,16 @@ apt-get install -y \
   sudo \
   traceroute \
   tree \
+  tshark \
   unzip \
   wget \
   zip
-DEBIAN_FRONTEND=noninteractive apt -y install tshark
 
 # Clean up (To free up storage space)
+df -h
 apt clean all
 apt -y autoremove
+df -h
 
 # Install Docker
 curl -fsSL https://get.docker.com | /bin/sh
@@ -252,6 +254,8 @@ rm -rf /usr/local/bin/init-img.sh
 EOF
 
 # Clean up
+df -h
 apt clean all
 apt -y autoremove
+df -h
 history -c
