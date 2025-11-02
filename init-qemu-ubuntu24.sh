@@ -19,6 +19,10 @@ apt-get install -y \
   zip
 DEBIAN_FRONTEND=noninteractive apt -y install tshark
 
+# Clean up (To free up storage space)
+apt clean all
+apt -y autoremove
+
 # Install Docker
 curl -fsSL https://get.docker.com | /bin/sh
 
@@ -249,4 +253,5 @@ EOF
 
 # Clean up
 apt clean all
+apt -y autoremove
 history -c
