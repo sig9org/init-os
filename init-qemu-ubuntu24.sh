@@ -257,6 +257,9 @@ mise use -g ripgrep@latest
 mise install ruff@latest
 mise use -g ruff@latest
 
+mise install rust@latest
+mise use -g rust@latest
+
 mise install uv@latest
 mise use -g uv@latest
 
