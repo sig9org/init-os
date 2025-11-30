@@ -131,7 +131,7 @@ apt update
 apt install -y mise
 
 # venv script
-cat << 'EOF' >> /usr/local/bin/venv
+cat << 'EOF' > /usr/local/bin/venv
 #!/usr/bin/env bash
 
 PYVER=3.13.9
