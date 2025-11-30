@@ -157,8 +157,6 @@ while getopts p-: opt; do
   esac
 done
 
-echo $PYVER
-
 # Python
 mise use python@${PYVER}
 mise exec python@${PYVER} -- uv venv .venv
