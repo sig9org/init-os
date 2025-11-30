@@ -134,8 +134,34 @@ apt install -y mise
 tee /usr/local/bin/venv <<EOF
 #!/usr/bin/env bash
 
-mise use python@latest
-uv venv .venv
+PYVER=3.13.9
+
+while getopts p-: opt; do
+  optarg="${!OPTIND}"
+  [[ "$opt" = - ]] && opt="-$OPTARG"
+
+  case "-$opt" in
+    -p|--python)
+      PYVER=$optarg
+      ;;
+    --)
+      break
+      ;;
+    -\?)
+      exit 1
+      ;;
+    --*)
+      echo "$0: illegal option -- ${opt##-}" >&2
+      exit 1
+      ;;
+  esac
+done
+
+echo $PYVER
+
+# Python
+mise use python@${PYVER}
+mise exec python@${PYVER} -- uv venv .venv
 
 cat << EOL >> mise.toml
 
