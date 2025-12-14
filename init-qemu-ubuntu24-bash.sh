@@ -17,8 +17,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y \
   tshark \
   unzip \
   wget \
-  zip \
-  zsh
+  zip
 
 # Clean up (To free up storage space)
 apt clean all
@@ -227,89 +226,40 @@ tasks:
 EOL
 EOF
 
-# zsh & oh-my-zsh
-chsh -s /bin/zsh
-/bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-mv ~/.oh-my-zsh /opt/
-
 # Initialization script
 cat << 'EOF' >> /usr/local/bin/init-img.sh
 #!/bin/bash
 
 chmod 755 /usr/local/bin/venv
-mv /opt/.oh-my-zsh ~/
-
-cat << 'EOL' > ~/.zshrc
-# Environment variables
-export EDITOR=nvim
-export ZSH="$HOME/.oh-my-zsh"
-
-# Theme
-ZSH_THEME="alanpeabody"
-
-# Plugins
-plugins=(
-  aliases
-  brew
-  composer
-  copypath
-  docker
-  git
-  github
-  history
-  laravel
-  zsh-autosuggestions
-  zsh-completions
-  zsh-syntax-highlighting
-)
-source $ZSH/oh-my-zsh.sh
-
-# Alias
-alias t="task"
-alias "tfp"="terraform plan"
-alias "tfa"="terraform apply -auto-approve"
-alias "tft"="terraform apply -auto-approve -var=\"tag=true\""
-alias "tfd"="terraform destroy -auto-approve"
-alias vi="nvim"
-alias vim="nvim"
-
-# History
-setopt hist_ignore_dups
-
-# mise
-eval "$(mise activate zsh)"
-
-# peco
-function peco-select-history() {
-  BUFFER=$(\history -n -r 1 | peco --query "$LBUFFER")
-  CURSOR=$#BUFFER
-  zle reset-prompt
-}
-zle -N peco-select-history
-bindkey '^r' peco-select-history
-
-function peco-cdr () {
-    local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N peco-cdr
-bindkey '^@' peco-cdr
-
-# uv
-eval "$(uv generate-shell-completion zsh)"
-EOL
 
 # Disable login messages
 echo 'exit' > ~/.hushlogin
 
-# Install tools using Mise
+cat << 'EOL' >> ~/.bashrc
+# Activate mise
+eval "$(/usr/bin/mise activate bash)"
+
+# Modify the prompt.
+if [ `id -u` = 0 ]; then
+  PS1="\[\e[1;31m\]\u@\h \W\\$ \[\e[m\]"
+else
+  PS1="\[\e[1;36m\]\u@\h \W\\$ \[\e[m\]"
+fi
+
+# NeoVim settings
+alias vi="nvim"
+alias vim="nvim"
+
+# peco settings
+peco-select-history() {
+  local _cmd=$(HISTTIMEFORMAT= history | tac | sed -e 's/^\s*[0-9]\+\s\+//' | peco --query "$READLINE_LINE")
+  READLINE_LINE="$_cmd"
+  READLINE_POINT=${#_cmd}
+}
+
+bind -x '"\C-r": peco-select-history'
+EOL
+
 mise install peco@latest
 mise use -g peco@latest
 
